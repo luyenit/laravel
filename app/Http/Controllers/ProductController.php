@@ -42,6 +42,10 @@ class ProductController extends Controller
     public function create()
     {
         //
+          //
+          $objCate = new Category();
+          $this->view['listCate'] = $objCate->loadAllCate();
+          return view('product.create', $this->view);
     }
 
     /**
@@ -50,6 +54,38 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+          //
+          $validate = $request->validate(
+            [
+               'name'=> ['required', 'string', 'max:255'],
+                'price' => ['required', 'integer', 'min:1'],
+                'quantity' => ['required', 'integer', 'min:1'],
+                'image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+                'category_id' => ['required', 'exists:categories,id']
+            ],
+            [
+              'name.required'=>'Trường tên không được bỏ trống',
+              'name.string'=>'Tên bắt buộc là chuỗi',
+              'name.max'=>'Trường tên không được vượt quá 255 ký tự',
+
+              'price.required'=>'Trường giá không được bỏ trống',
+              'price.integer'=>'giá phải là số ',
+              'price.min'=>'Trường giá không được nhỏ hơn 1',
+
+              'quantity.required'=>'Trường số lượng không được bỏ trống',
+              'quantity.integer'=>'số lượng  phải là số ',
+              'quantity.min'=>'Trường số lượng  không được nhỏ hơn 1',
+
+              'image.required'=>'Trường ảnh không được bỏ trống',
+              'image.image'=>'Không phải ảnh',
+              'image.mimes'=>'ảnh không đúng định dạng jpg,jpeg,png',
+              'image.max'=>'Ảnh không được vượt quá 2MB',
+
+              'category_id.required'=>'Trường danh mục không được bỏ trống',
+                
+            ]
+        );
+//        dd($request->all());
     }
 
     /**

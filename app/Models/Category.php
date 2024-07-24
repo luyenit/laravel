@@ -18,10 +18,36 @@ class Category extends Model
         'updated_at'
     ];
     public $timestamps = false;
-    public function loadAllCate(){
+    public function loadAllCate()
+    {
         $query = DB::table($this->table)
             ->select($this->fillable)
             ->get();
+        return $query;
+    }
+
+    public function loadDataWithPager()
+    {
+        // Chưa có tìm kiếm
+        // Có truy vân kèm phân trang
+        // ORM
+        //        $query = Product::query()
+        //                ->with('loadAllCategory')
+        //                ->latest('id')
+        //                ->paginate(10);
+        // DB
+        // Join
+        //        $this->fillable[] = 'categories.name as catename';
+        //        $query = DB::table($this->table)
+        //            ->select($this->fillable)
+        //            ->join('categories', 'products.category_id', '=', 'categories.id')
+        //            ->orderByDesc('id')
+        //            ->paginate(10);
+        // Truy vân + logic
+        $query = DB::table($this->table)
+            ->select($this->fillable)
+            ->orderByDesc('id')
+            ->paginate(10);
         return $query;
     }
 }
